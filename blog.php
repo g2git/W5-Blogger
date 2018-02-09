@@ -91,7 +91,7 @@ session_start();
 <?php
                   $bloggername =$_SESSION['bloggername'];
 
-                  $query1 = "SELECT title, blogArticle, blogId, category, dateTime FROM blogs WHERE author = '$bloggername' ORDER BY dateTime DESC;";
+                  $query1 = "SELECT blogId, title, blogArticle, blogId, category, enable_comment, dateTime FROM blogs WHERE author = '$bloggername' ORDER BY dateTime DESC;";
                   $result1 = mysqli_query($connection, $query1);
                   $row1 = mysqli_fetch_all($result1, MYSQLI_ASSOC);
 
@@ -108,6 +108,18 @@ session_start();
                                   <tr><td><?php echo "Date: ".$v["dateTime"]?></td></tr>
                                   <tr><td><?php echo "Title: ".$v["title"]?></td></tr>
                                   <tr><td><div><?php echo $v["blogArticle"]?></div></td></tr>
+                                  <tr><td><form method = "POST">
+                                    <input type = "hidden" name ="commentenable" value="<?php echo $v["blogId"]?>">
+                                    <label><input type="checkbox" name="commentcheckbox" value="value2">Disable commenting</label>
+                                    <input type="submit" id="submitcbox" name="submitcbox" value="Apply">
+
+                                  </form></td></tr>
+
+                                  <!-- check if comments enabled -->
+                                  <?php
+                                  if($v["enable_comment"] == 0){
+                                    ?>
+
                                   <tr><td>
                                     <div>
                                     <p>Post a comment</p>
@@ -141,8 +153,11 @@ session_start();
                                     </div>
                                   </td></tr>
 
+
+
       <?php
-                                  } ?>
+    }
+  }; ?>
 
 
 
@@ -181,6 +196,13 @@ session_start();
                               $result4 = mysqli_query($connection, $query4);
                               $row4 = mysqli_fetch_all($result4, MYSQLI_ASSOC);
                           };
+
+                          if (isset($_POST['commentcheckbox']) && isset($_POST['submitcbox'])) {
+                            $blogid5 = $_POST['commentenable'];
+                              $query5 = "UPDATE blogs SET enable_comment = '1' WHERE blogId = '$blogid5';";
+                              $result5 = mysqli_query($connection, $query5);
+                              $row5 = mysqli_fetch_all($result5, MYSQLI_ASSOC);
+                          }
 
                           ?>
       </div>
