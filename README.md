@@ -8,6 +8,8 @@
 
 -Added delete comment option for blogger
 
+-Added block comments option on article for blogger. Updated on blog.php, reader.php, created authorsearch.php, reader.php can see all articles now.
+
 Live demo: https://code2live.nl/
 
 Trello: https://trello.com/b/5BY4nVrL/blogger
