@@ -11,7 +11,7 @@
 -Added block comments option on article for blogger. Updated on blog.php, reader.php, created authorsearch.php, reader.php can see all articles now.
 
 
-
+11-02:
 
 -Made minor changes to layout
 
