@@ -69,7 +69,6 @@ $(function() {
   });
 
 
-var pc = document.getElementById("postComment");
   $("button").on("click", (function() {
 
 
