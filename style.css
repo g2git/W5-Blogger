@@ -10,7 +10,7 @@
   resize: none;
 }
 
-#password{
+input[type=password]{
   width: 20%;
   padding: 12px 20px;
   margin: 8px 0;

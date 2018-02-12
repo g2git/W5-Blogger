@@ -10,7 +10,7 @@ session_start();
         <link rel="stylesheet" href="style.css">
         <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
         <script src="http://malsup.github.com/jquery.form.js"></script>
-        <script src="reader.js"></script>
+        <script src="index.js"></script>
 
     </head>
 
@@ -18,6 +18,8 @@ session_start();
 
       <nav>
         <a href="index.php">Home</a>
+        <a href="login.php">Log in</a>
+        <a href="signup.php">Sign up</a>
         <a href="#" id="goBack">Go Back</a>
       </nav>
 

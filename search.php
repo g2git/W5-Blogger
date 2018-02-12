@@ -244,9 +244,12 @@ session_start();
 
         //submit comment
         if (isset($_POST['readercomment'])) {
+          if (isset($_SESSION['username']) || isset($_SESSION['bloggername'])){
+
             $readercomment = $_POST['readercomment'];
             $blogId1 = $_POST['blogid'];
             $username = $_SESSION['username'];
+            $bloggername = $_SESSION['bloggername'];
 
 
             //if anonymous box has been checked
@@ -255,9 +258,15 @@ session_start();
                 $result1 = mysqli_query($connection, $query1);
                 $row1 = mysqli_fetch_all($result1, MYSQLI_ASSOC);
             } else {
+              if(isset($_SESSION['username'])){
                 $query1 = "INSERT INTO comments (comment, blogId, username) VALUES ('$readercomment', '$blogId1', '$username');";
                 $result1 = mysqli_query($connection, $query1);
                 $row1 = mysqli_fetch_all($result1, MYSQLI_ASSOC);
+              }else{
+                $query1 = "INSERT INTO comments (comment, blogId, username) VALUES ('$readercomment', '$blogId1', '$bloggername');";
+                $result1 = mysqli_query($connection, $query1);
+                $row1 = mysqli_fetch_all($result1, MYSQLI_ASSOC);
+              }
             }
 
 
@@ -315,6 +324,9 @@ session_start();
             </table>";
                 }
             }
+          }else{
+            echo "You must be logged in to post comments";
+          }
         };
 
 
