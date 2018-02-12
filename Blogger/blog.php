@@ -20,7 +20,6 @@ session_start();
 
       <nav>
         <a href="index.php">Home</a>
-        <a href="login.php">Log in</a>
         <a href="#" id="goBack">Go Back</a>
       </nav>
 
@@ -29,8 +28,8 @@ session_start();
 
 //submit Blog
     if (isset($_POST['submitBlog'])) {
-        $authorName = $_SESSION['bloggername'];
-        $authorID = $_SESSION['bloggerid'];
+        $authorName = $_POST["author"];
+        $authorID = $_POST["authorId"];
         $title = $_POST["title"];
         $blogArticle = $_POST["blogArticle"];
         $category = $_POST["category"];
@@ -49,6 +48,10 @@ session_start();
                 <div id="wrapper">
 
                     <form  method="POST">
+                        <label for="author">Please enter your name here</label>
+                        <input type="text" name="author"><br>
+                        <label for="authorId">Enter your id here</label>
+                        <input type="text" name="authorId"><br>
                         <label for="title">Title</label>
                         <input type="text" name="title"><br>
                         <label for="category">Category</label>
@@ -72,18 +75,18 @@ session_start();
                           </table>
 
                           <div>
-                      <input type="button" id="more_fields" value="Add More"/>
-                      <input type="button" id ="apply" value="Apply">
+    <input type="button" id="more_fields" value="Add More"/>
+    <input type="button" id ="apply" value="Apply">
+  </div>
+
+                    </form>
                     </div>
+<div>
+<input type = "button" id="toggle" value="Edit Abbreviations">
+                </div>
 
-                                      </form>
-                                      </div>
-                  <div>
-                  <input type = "button" id="toggle" value="Edit Abbreviations">
-                                  </div>
-
-                                  <div>
-                  <?php
+                <div>
+<?php
                   $bloggername =$_SESSION['bloggername'];
 
                   $query1 = "SELECT blogId, title, blogArticle, blogId, category, enable_comment, dateTime FROM blogs WHERE author = '$bloggername' ORDER BY dateTime DESC;";
@@ -109,8 +112,8 @@ session_start();
 
                                   <!-- check if comments enabled -->
                                   <?php
-                                  if ($v["enable_comment"] == 0) {
-                                      ?>
+                                  if($v["enable_comment"] == 0){
+                                    ?>
 
 
 
@@ -143,14 +146,14 @@ session_start();
                                   $blogid2 = $v["blogId"];
 
 
-                                      $query2 = "SELECT id, comment, username FROM comments WHERE blogId = '$blogid2';";
-                                      $result2 = mysqli_query($connection, $query2);
-                                      $row2 = mysqli_fetch_all($result2, MYSQLI_ASSOC);
+                                  $query2 = "SELECT id, comment, username FROM comments WHERE blogId = '$blogid2';";
+                                  $result2 = mysqli_query($connection, $query2);
+                                  $row2 = mysqli_fetch_all($result2, MYSQLI_ASSOC);
 
 
-                                      // Display comment
-                                      foreach ($row2 as $k2 => $v2) {
-                                          ?>
+                                  // Display comment
+                                  foreach ($row2 as $k2 => $v2) {
+                                      ?>
                                     <tr><td><div>
                                         <form method = "POST">
                                         <input type = "hidden" name ="commentid" value="<?php echo $v2["id"]?>">
@@ -163,13 +166,14 @@ session_start();
 
 
                             <?php
-                                      } ?>
+                          }
+                          ?>
                       </div></td></tr>
                       </table>
 
                           <?php
-                                  };
-                              }
+                        };
+                      }
                         ?>
 
 
@@ -207,14 +211,14 @@ session_start();
                           };
 
                           if (isset($_POST['commentcheckbox']) && isset($_POST['submitcbox'])) {
-                              $blogid5 = $_POST['commentenable'];
+                            $blogid5 = $_POST['commentenable'];
                               $query5 = "UPDATE blogs SET enable_comment = '1' WHERE blogId = '$blogid5';";
                               $result5 = mysqli_query($connection, $query5);
                               $row5 = mysqli_fetch_all($result5, MYSQLI_ASSOC);
                           }
 
                           ?>
-                        </div>
+      </div>
 
                 </div>
 
