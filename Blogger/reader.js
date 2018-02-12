@@ -14,7 +14,7 @@ $(function() {
       url: 'search.php',
       data: {
         authorsearch: afv,
-        idsearch: idfv
+        idFilter: idfv
       },
       success: function(response) {
         $("#readerblogList").html(response);
@@ -50,14 +50,14 @@ $(function() {
   $('#idButton').click(function() {
 
     //Get data to be sent to server
-    var ids = document.getElementById("idSearch");
+    var ids = document.getElementById("idsearch1");
     var idsv = ids.value;
 
     $.ajax({
       type: 'POST',
       url: 'search.php',
       data: {
-        idsearch: idsv
+        idsearch1: idsv
       },
       success: function(response) {
         $("#readerblogList").html(response);
@@ -68,15 +68,27 @@ $(function() {
     });
   });
 
+  // $('form').one("submit", submitFormFunction);
+  //
+  // function submitFormFunction(event) {
+  //     event.preventDefault();
+  //     $('form').submit();
+  // }
 
-  $("button").on("click", (function() {
-
+//var pc = document.getElementById("postComment");
+  $("button").on("click", function() {
+      //  $('form').submit(function(event) {
+      // $('form').one("submit", function(event) {
+      // Stop the browser from submitting the form.
+      //event.preventDefault();
+      //console.log($("#postComment"));
 
       var fr = $(this).closest("form");
 
       // Serialize the form data.
       var formData = fr.serialize();
-
+      // var formData = $(this).serialize();
+      //console.log(formData);
 
       // Submit the form using AJAX.
       $.ajax({
@@ -91,9 +103,7 @@ $(function() {
         }
       });
 
-    })
-
-  );
+    });
 
   $("#goBack").click(function(event) {
     event.preventDefault();

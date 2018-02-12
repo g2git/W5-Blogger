@@ -10,9 +10,9 @@ session_start();
 
 
             //filter by author
-        if (isset($_POST['authorsearch'])  && isset($_POST['idsearch'])) {
+        if (isset($_POST['authorsearch'])  && isset($_POST['idFilter'])) {
             $name = $_POST['authorsearch'];
-            $authID = $_POST['idsearch'];
+            $authID = $_POST['idFilter'];
 
             $query = "SELECT title, blogArticle, blogId, category, enable_comment, dateTime FROM blogs WHERE author = '$name' AND authorId = '$authID' ORDER BY dateTime DESC;";
             $result = mysqli_query($connection, $query);
@@ -149,8 +149,8 @@ session_start();
                 }
 
 //search id
-        if (isset($_POST['idsearch'])) {
-            $name = $_POST['idsearch'];
+        if (isset($_POST['idsearch1'])) {
+            $name = $_POST['idsearch1'];
 
             $query = "SELECT DISTINCT authorId FROM blogs WHERE author ='$name'";
             $result = mysqli_query($connection, $query);

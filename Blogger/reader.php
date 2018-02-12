@@ -43,7 +43,7 @@ session_start();
               <div>
                 <table>
                   <tr><td></td><td><label>Search for author's id</label></td></tr>
-                  <tr><td>Name</td><td><input type= "text" name="idSearch" id ="idSearch"></td></tr>
+                  <tr><td>Name</td><td><input type= "text" name="idsearch1" id ="idsearch1"></td></tr>
                   <tr><td></td><td><input type="button" name="idButton" id ="idButton" value="Search"></td></tr>
                 </table>
               </div>
