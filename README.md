@@ -29,7 +29,7 @@
 
 -Added category and name filter. Content is changed without page reload.
 
--For reader comment is added without page reload. Reader must reload for a second post.
+-Reader comment is added without page reload. But if the html content is changed with Ajax, reader must reload page for a comment post.
 
 
 
