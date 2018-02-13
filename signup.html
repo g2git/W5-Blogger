@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="http://malsup.github.com/jquery.form.js"></script>
+    <script src="signup.js"></script>
+
+</head>
+
+<nav>
+  <a href="index.php">Home</a>
+  <a href="login.php">Log in</a>
+  <a href="signup.php">Sign up</a>
+  <a href="#" id="goBack">Go Back</a>
+</nav>
+
+<body>
+
+  <div>
+  <div id = "signupb">
+    <form method = "POST" action='signup.php'>
+      <table>
+        <tr><td></td><td><label>Sign up as blogger</label></td></tr>
+        <tr><td>Choose a bloggername</td><td><input type= "text" name="bname" id ="bname" required></td></tr>
+        <tr><td>Choose a password</td><td><input type= "password" name="bpass" id ="bpass"></td></tr>
+        <tr><td>Verify password</td><td><input type= "password" name="vbpass" id ="vbpass"></td></tr>
+        <tr><td></td><td><input type="submit" name="subB" id ="subB" value="Sign up"></td></tr>
+      </table>
+    </form>
+  </div>
+
+  <div id = "signupu">
+    <form method = "POST" action='signup.php'>
+      <table>
+        <tr><td></td><td><label>Sign up as reader</label></td></tr>
+        <tr><td>Choose a username</td><td><input type= "text" name="uname" id ="uname" required></td></tr>
+        <tr><td>Choose a password</td><td><input type= "password" name="upass" id ="upass"></td></tr>
+        <tr><td>Verify password</td><td><input type= "password" name="vupass" id ="vupass"></td></tr>
+        <tr><td></td><td><input type="submit" name="subU" id ="subU" value="Sign up"></td></tr>
+      </table>
+  </form>
+  </div>
+
+</div>
+
+
+</body>
+
+
+</html>

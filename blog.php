@@ -21,6 +21,7 @@ session_start();
       <nav>
         <a href="index.php">Home</a>
         <a href="login.php">Log in</a>
+        <a href="signup.html">Sign up</a>
         <a href="#" id="goBack">Go Back</a>
       </nav>
 
@@ -32,7 +33,7 @@ session_start();
         $authorName = $_SESSION['bloggername'];
         $authorID = $_SESSION['bloggerid'];
         $title = $_POST["title"];
-        $blogArticle = $_POST["blogArticle"];
+        $blogArticle = mysqli_escape_string($connection,$_POST["blogArticle"]);
         $category = $_POST["category"];
 
 
@@ -85,8 +86,9 @@ session_start();
                                   <div>
                   <?php
                   $bloggername =$_SESSION['bloggername'];
+                  $authorid = $_SESSION['bloggerid'];
 
-                  $query1 = "SELECT blogId, title, blogArticle, blogId, category, enable_comment, dateTime FROM blogs WHERE author = '$bloggername' ORDER BY dateTime DESC;";
+                  $query1 = "SELECT blogId, title, blogArticle, blogId, category, enable_comment, dateTime FROM blogs WHERE author = '$bloggername' AND authorId ='$autorid' ORDER BY dateTime DESC;";
                   $result1 = mysqli_query($connection, $query1);
                   $row1 = mysqli_fetch_all($result1, MYSQLI_ASSOC);
 
@@ -142,7 +144,7 @@ session_start();
                                     <?php
                                   $blogid2 = $v["blogId"];
 
-
+                                      //query for comments
                                       $query2 = "SELECT id, comment, username FROM comments WHERE blogId = '$blogid2';";
                                       $result2 = mysqli_query($connection, $query2);
                                       $row2 = mysqli_fetch_all($result2, MYSQLI_ASSOC);
@@ -180,7 +182,7 @@ session_start();
                           if (isset($_POST['submitComment'])) {
                               $readercomment = $_POST['readercomment'];
                               $blogId1 = $_POST['blogid'];
-                              $username = $_SESSION['username'];
+                              $bloggername = $_SESSION['bloggername'];
 
 
                               //if anonymous box has been checked
@@ -189,7 +191,7 @@ session_start();
                                   $result1 = mysqli_query($connection, $query1);
                                   $row1 = mysqli_fetch_all($result1, MYSQLI_ASSOC);
                               } else {
-                                  $query1 = "INSERT INTO comments (comment, blogId, username) VALUES ('$readercomment', '$blogId1', '$username');";
+                                  $query1 = "INSERT INTO comments (comment, blogId, username) VALUES ('$readercomment', '$blogId1', '$bloggername');";
                                   $result1 = mysqli_query($connection, $query1);
                                   $row1 = mysqli_fetch_all($result1, MYSQLI_ASSOC);
                               }

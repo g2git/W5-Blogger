@@ -246,7 +246,7 @@ session_start();
         if (isset($_POST['readercomment'])) {
           if (isset($_SESSION['username']) || isset($_SESSION['bloggername'])){
 
-            $readercomment = $_POST['readercomment'];
+            $readercomment = mysqli_escape_string($connection, $_POST['readercomment']);
             $blogId1 = $_POST['blogid'];
             $username = $_SESSION['username'];
             $bloggername = $_SESSION['bloggername'];

@@ -20,6 +20,10 @@ input[type=password]{
   box-sizing: border-box;
 }
 
+#bpass, #vbpass, #upass, #vupass{
+  width: 100%;
+}
+
 #readercomment {
   size: 100px;
   width: 100%;
@@ -61,6 +65,10 @@ input[type=submit], input[type=button] {
 #aFilter, #cFilter, #idButton, #titleButton{
 width: 100%;
 background-color: rgb(57, 80, 203)
+}
+
+#subB, #subU{
+  width: 100%;
 }
 
 #postComment{
@@ -111,6 +119,10 @@ div {
   border-radius: 5px;
   background-color: #f2f2f2;
   padding: 20px;
+}
+
+#signupb{
+float: left;
 }
 
 #categoryfilter {

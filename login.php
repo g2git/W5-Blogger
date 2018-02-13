@@ -1,6 +1,7 @@
 <?php
-session_start();
+include_once('database.php');
 
+session_start();
 ?>
 
 <head>
@@ -15,7 +16,7 @@ session_start();
 <nav>
   <a href="index.php">Home</a>
   <a href="login.php">Log in</a>
-  <a href="signup.php">Sign up</a>
+  <a href="signup.html">Sign up</a>
   <a href="#" id="goBack">Go Back</a>
 </nav>
 
@@ -29,14 +30,38 @@ function redirect_to($newlocation)
 }
 
   if (isset($_POST['submitreader'])) {
-      $_SESSION['username'] = htmlentities($_POST['username']);
+    $username = htmlentities($_POST['username']);
+    $password = htmlentities($_POST['upassword']);
+
+    $query = "SELECT password, id FROM users WHERE username = '$username';";
+    $result = mysqli_query($connection, $query);
+    $row = mysqli_fetch_assoc($result);
+
+    if(password_verify($password,$row['password'])){
+      session_unset();
+      $_SESSION['username'] = $username;
       redirect_to("index.php");
+    }else{
+      echo "<p style=\"color:red\">Incorrect, please try again</p>";
+    }
   }
 
   if (isset($_POST['submitblogger'])) {
-      $_SESSION['bloggername'] = htmlentities($_POST['bloggername']);
-      $_SESSION['bloggerid'];
+    $name = htmlentities($_POST['bloggername']);
+    $password = htmlentities($_POST['bpassword']);
+
+    $query = "SELECT authorid, password FROM blogger WHERE author = '$name';";
+    $result = mysqli_query($connection, $query);
+    $row = mysqli_fetch_assoc($result);
+
+    if(password_verify($password,$row['password'])){
+      session_unset();
+      $_SESSION['bloggername'] = $name;
+      $_SESSION['bloggerid'] = $row['autorid'];
       redirect_to("blog.php");
+    }else{
+      echo "<p style=\"color:red\">Incorrect, please try again</p>";
+    }
   }
 
   ?>
@@ -51,8 +76,8 @@ function redirect_to($newlocation)
 
         <form id="reader" action="" method ="POST">
             <label for="reader">Login as reader</label>
-           <input type="text" name ="username" id="username" placeholder="Please enter your username">
-             <input type="password" name ="rpassword" id="rpassword" placeholder="Please enter your password" required>
+            <input type="text" name ="username" id="username" placeholder="Please enter your username" required>
+            <input type="password" name ="upassword" id="upassword" placeholder="Please enter your password" required>
             <input type="submit" name="submitreader" id="submitreader" value="Enter">
 
         </form>
