@@ -33,7 +33,7 @@ session_start();
         $authorName = $_SESSION['bloggername'];
         $authorID = $_SESSION['bloggerid'];
         $title = $_POST["title"];
-        $blogArticle = mysqli_escape_string($connection,$_POST["blogArticle"]);
+        $blogArticle = mysqli_escape_string($connection, $_POST["blogArticle"]);
         $category = $_POST["category"];
 
 
@@ -73,25 +73,28 @@ session_start();
                           </table>
 
                           <div>
-                      <input type="button" id="more_fields" value="Add More"/>
-                      <input type="button" id ="apply" value="Apply">
+                            <input type="button" id="more_fields" value="Add More"/>
+                            <input type="button" id ="apply" value="Apply">
+                          </div>
+
+                      </form>
                     </div>
 
-                                      </form>
-                                      </div>
                   <div>
-                  <input type = "button" id="toggle" value="Edit Abbreviations">
-                                  </div>
+                    <input type = "button" id="toggle" value="Edit Abbreviations">
+                  </div>
 
-                                  <div>
+                  <div>
                   <?php
+                  //Show my articles
                   $bloggername =$_SESSION['bloggername'];
                   $authorid = $_SESSION['bloggerid'];
 
-                  //Show my articles
                   $query1 = "SELECT blogId, title, blogArticle, category, enable_comment, dateTime FROM blogs WHERE author = '$bloggername' AND authorId ='$authorid' ORDER BY dateTime DESC;";
                   $result1 = mysqli_query($connection, $query1);
                   $row1 = mysqli_fetch_all($result1, MYSQLI_ASSOC);
+
+
 
                       ?>
 
@@ -108,6 +111,15 @@ session_start();
                                   <p><?php echo "Category: ".$v["category"]?></p>
                                   <div><?php echo $v["blogArticle"]?></div>
 
+                                  <div>
+                                      <form  method="POST" action="editblog.php">
+                                        <input type="hidden" name="edit_blogid" value = <?php echo $v["blogId"]?>>
+                                        <input type="hidden" name="edit_title" value = <?php echo $v["title"]?>>
+                                        <input type="hidden" name="edit_category" value = <?php echo $v["category"]?>>
+                                        <input type="hidden" name="edit_blogArticle" value = <?php echo $v["blogArticle"]?>>
+                                        <input type="submit" name="edit" value="Edit blog">
+                                      </form>
+                                  </div>
 
                                   <!-- check if comments enabled -->
                                   <?php
