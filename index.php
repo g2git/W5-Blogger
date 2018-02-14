@@ -59,6 +59,28 @@ session_start();
                 </table>
               </div>
 
+              <div>
+                  <table>
+                  <tr><td><label>Filter by month</label></td></tr>
+                  <tr><td>
+                    <select class="dropdown" name="Month" id ="Month">
+                      <option value="01">Januari</option>
+                      <option value="02">Februari</option>
+                      <option value="03">Maart</option>
+                      <option value="04">April</option>
+                      <option value="05">Mei</option>
+                      <option value="06">Juni</option>
+                      <option value="07">Juli</option>
+                      <option value="08">Augustus</option>
+                      <option value="09">September</option>
+                      <option value="10">Oktober</option>
+                      <option value="11">November</option>
+                      <option value="12">December</option>
+                    </select></td></tr>
+                  <tr><td><input type="button" name= "monthButton" id = "monthButton" value="Filter"></td></tr>
+                  </table>
+              </div>
+
             </div>
 
             <!-- show all blogs -->
@@ -104,7 +126,7 @@ session_start();
                           <tr><td><div><p>Comments</p></div></td></tr>
                           <tr><td><div id=comments>
                           <?php
-                        $blogid2 = $v["blogId"];
+                                $blogid2 = $v["blogId"];
                                 $query2 = "SELECT comment, username FROM comments WHERE blogId = '$blogid2';";
                                 $result2 = mysqli_query($connection, $query2);
                                 $row2 = mysqli_fetch_all($result2, MYSQLI_ASSOC);

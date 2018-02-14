@@ -94,14 +94,25 @@ $(function() {
     }
   });
 
-  // $('form').one("submit", submitFormFunction);
-  //
-  // function submitFormFunction(event) {
-  //     event.preventDefault();
-  //     $('form').submit();
-  // }
+  $("#monthButton").click(function(e) {
+    var mData = $("#Month").val();
 
-  //var pc = document.getElementById("postComment");
+    $.ajax({
+      type: 'POST',
+      url: 'search.php',
+      data: {
+        month: mData
+      },
+      success: function(response) {
+        $("#readerblogList").html(response);
+      },
+      error: function(msg) {
+        console.log("Error: " + msg);
+      }
+    });
+  });
+
+
   $("button").on("click", function() {
     //  $('form').submit(function(event) {
     // $('form').one("submit", function(event) {

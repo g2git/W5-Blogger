@@ -2,12 +2,6 @@
 include_once('database.php');
 
 session_start();
-?>
-
-
-
-        <?php
-
 
             //filter by author
         if (isset($_POST['authorsearch'])  && isset($_POST['idFilter'])) {
@@ -76,8 +70,6 @@ session_start();
             }
         }
 
-
-
         //search category
         if (isset($_POST['catsearch'])) {
             $category = $_POST['catsearch'];
@@ -142,7 +134,7 @@ session_start();
             }
         }
 
-//search id
+        //search id
         if (isset($_POST['idsearch1'])) {
             $name = $_POST['idsearch1'];
 
@@ -232,15 +224,78 @@ session_start();
             } else {
                 $no_hits--;
             }
+          }
+
+              //if no matches are found
+            if ($no_hits == 0)
+            {
+                echo "The title you searched did not return any results";
+            }
         }
 
-        //if no matches are found
-        if ($no_hits==0)
-        {
-          echo "The title you searched did not return any results";
-        }
-      }
+        if (isset($_POST['month'])) {
+          $month = $_POST['month'];
 
+          $query = "SELECT * FROM blogs WHERE MONTH(dateTime) = '$month' ORDER BY dateTime DESC;";
+          $result = mysqli_query($connection, $query);
+          $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+          if ($result->num_rows > 0) {
+            foreach ($row as $k => $v) {
+                echo
+
+                "<div>
+                  <p>Date: ".$v["dateTime"]."</p>
+                  <p>Author: ".$v["author"]."</p>
+                  <p>Title: ".$v["title"]."</p>
+                  <p>Category: ".$v["category"]."</p>
+                  <div>".$v["blogArticle"]."</div>";
+
+          // check if comments enabled
+
+          if ($v["enable_comment"] == 0) {
+              echo
+
+                  "<div>
+                    <p>Post a comment</p>
+                    <form id=\"frm\">
+                    <input type = \"hidden\" name =\"blogid\" value=".$v["blogId"].">
+                    <label><input type=\"checkbox\" name=\"checkbox\" value=\"value1\">Post comment anonymously</label>
+                    <textarea name=\"readercomment\" id=\"readercomment\"></textarea>
+                    <button type=\"button\" id=\"postComment\" name=\"postComment\">Post comment</button>
+                    </form>
+                  </div>
+              </div>".
+
+
+
+                // Comments section
+                "<table id = tbl>
+                  <tr><td><div><p>Comments</p></div></td></tr>
+                  <tr><td><div id=comments>";
+
+              $blogid2 = $v["blogId"];
+              $query2 = "SELECT comment, username FROM comments WHERE blogId = '$blogid2';";
+              $result2 = mysqli_query($connection, $query2);
+              $row2 = mysqli_fetch_all($result2, MYSQLI_ASSOC);
+              foreach ($row2 as $k2 => $v2) {
+                  echo
+
+                    "<tr><td><div>".$v2["username"].": ".$v2["comment"]."</div></td></tr>";
+              }
+              echo
+
+              "</div></td></tr>
+              </table>";
+                }
+            }
+            echo
+
+              "</div>";
+            }else{
+              echo "No articles found for this month";
+            }
+          }
 
         //submit comment
         if (isset($_POST['readercomment'])) {

@@ -62,7 +62,7 @@ input[type=submit], input[type=button] {
   cursor: pointer;
 }
 
-#aFilter, #cFilter, #idButton, #titleButton{
+#aFilter, #cFilter, #idButton, #titleButton, #monthButton{
 width: 100%;
 background-color: rgb(57, 80, 203)
 }
