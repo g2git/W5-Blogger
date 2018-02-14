@@ -50,14 +50,14 @@ function redirect_to($newlocation)
     $name = htmlentities($_POST['bloggername']);
     $password = htmlentities($_POST['bpassword']);
 
-    $query = "SELECT authorid, password FROM blogger WHERE author = '$name';";
+    $query = "SELECT authorId, password FROM blogger WHERE author = '$name';";
     $result = mysqli_query($connection, $query);
     $row = mysqli_fetch_assoc($result);
 
     if(password_verify($password,$row['password'])){
       session_unset();
       $_SESSION['bloggername'] = $name;
-      $_SESSION['bloggerid'] = $row['autorid'];
+      $_SESSION['bloggerid'] = $row['authorId'];
       redirect_to("blog.php");
     }else{
       echo "<p style=\"color:red\">Incorrect, please try again</p>";
@@ -65,7 +65,7 @@ function redirect_to($newlocation)
   }
 
   ?>
-    <div id="wrapper ">
+    <div id="wrapper">
 
         <form id="blogger" action="" method ="POST">
             <label for="blogger">Login as blogger</label>

@@ -88,13 +88,13 @@ session_start();
                   $bloggername =$_SESSION['bloggername'];
                   $authorid = $_SESSION['bloggerid'];
 
-                  $query1 = "SELECT blogId, title, blogArticle, blogId, category, enable_comment, dateTime FROM blogs WHERE author = '$bloggername' AND authorId ='$autorid' ORDER BY dateTime DESC;";
+                  //Show my articles
+                  $query1 = "SELECT blogId, title, blogArticle, category, enable_comment, dateTime FROM blogs WHERE author = '$bloggername' AND authorId ='$authorid' ORDER BY dateTime DESC;";
                   $result1 = mysqli_query($connection, $query1);
                   $row1 = mysqli_fetch_all($result1, MYSQLI_ASSOC);
 
                       ?>
 
-                      <!-- filter by Author -->
                       <div id="blgList">
                               <h2>My Articles</h2>
                               <?php
