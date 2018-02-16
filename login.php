@@ -16,7 +16,7 @@ session_start();
 <nav>
   <a href="index.php">Home</a>
   <a href="login.php">Log in</a>
-  <a href="signup.html">Sign up</a>
+  <a href="signup.php">Sign up</a>
   <a href="#" id="goBack">Go Back</a>
 </nav>
 
@@ -79,8 +79,9 @@ function redirect_to($newlocation)
             <input type="text" name ="username" id="username" placeholder="Please enter your username" required>
             <input type="password" name ="upassword" id="upassword" placeholder="Please enter your password" required>
             <input type="submit" name="submitreader" id="submitreader" value="Enter">
-
         </form>
+
+        <a id="forgotPass" href="reset_pass.html">Forgot password?</a>
 
     </div>
 </body>

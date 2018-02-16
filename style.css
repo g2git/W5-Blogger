@@ -10,7 +10,7 @@
   resize: none;
 }
 
-input[type=password]{
+input[type=password], input[type=email]{
   width: 20%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -20,8 +20,12 @@ input[type=password]{
   box-sizing: border-box;
 }
 
-#bpass, #vbpass, #upass, #vupass{
+#bpass, #vbpass, #upass, #vupass, #bemail, #uemail ,#rec_email, #changePass{
   width: 100%;
+}
+
+#forgotPass{
+  float: right
 }
 
 #readercomment {
@@ -67,7 +71,7 @@ width: 100%;
 background-color: rgb(57, 80, 203)
 }
 
-#subB, #subU{
+#subB, #subU, #emailButton, #submitPassword{
   width: 100%;
 }
 
@@ -136,6 +140,11 @@ float: left;
   margin-left: auto;
   margin-right: auto;
   width: 50em
+}
+
+#Recovery, #Change{
+  margin: auto;
+  width: 40%
 }
 
 

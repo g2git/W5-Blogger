@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+  <link rel="stylesheet" href="style.css">
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="http://malsup.github.com/jquery.form.js"></script>
+  <script src="reset_pass.js"></script>
+
+</head>
+
+<nav>
+  <a href="index.php">Home</a>
+  <a href="login.php">Log in</a>
+  <a href="signup.php">Sign up</a>
+  <a href="#" id="goBack">Go Back</a>
+</nav>
+
+<body>
+  <div id="Recovery">
+    <form id=recForm>
+      <table>
+        <tr>
+          <td><label>Are you a blogger or a reader?</label></td>
+        </tr>
+        <tr>
+          <td><select class="dropdown" name="memberType" id="memberType">
+          <option value="blogger">Blogger</option>
+          <option value="reader">Reader</option>
+        </select></td>
+        </tr>
+        <tr>
+          <td><label>Enter Email Address To Send Password Link</label></td>
+        </tr>
+        <tr>
+          <td><input type="email" name="rec_email" id="rec_email" required></td>
+        </tr>
+        <tr>
+          <td><input type="button" name="emailButton" id="emailButton" value="Send E-mail"></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</body>
+
+</html>

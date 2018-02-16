@@ -4,11 +4,10 @@ include_once('database.php');
 session_start();
 
             //filter by author
-        if (isset($_POST['authorsearch'])  && isset($_POST['idFilter'])) {
+        if (isset($_POST['authorsearch'])) {
             $name = $_POST['authorsearch'];
-            $authID = $_POST['idFilter'];
 
-            $query = "SELECT title, blogArticle, blogId, category, enable_comment, dateTime FROM blogs WHERE author = '$name' AND authorId = '$authID' ORDER BY dateTime DESC;";
+            $query = "SELECT title, blogArticle, blogId, category, enable_comment, dateTime FROM blogs WHERE author = '$name' ORDER BY dateTime DESC;";
             $result = mysqli_query($connection, $query);
             $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
@@ -66,7 +65,7 @@ session_start();
 
                 //end   if ($result->num_rows > 0)
             } else {
-                echo "The name and ID you entered did not return any results";
+                echo "The name you entered did not return any results";
             }
         }
 
@@ -131,29 +130,6 @@ session_start();
                         "</div>";
             } else {
                 echo "The category you entered did not return any result";
-            }
-        }
-
-        //search id
-        if (isset($_POST['idsearch1'])) {
-            $name = $_POST['idsearch1'];
-
-            $query = "SELECT DISTINCT authorId FROM blogs WHERE author ='$name'";
-            $result = mysqli_query($connection, $query);
-            $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
-            if ($result->num_rows > 0) {
-                echo
-                "<table>
-                    <th>Author: ".$name."</th>";
-
-
-                foreach ($row as $k => $v) {
-                    echo "<tr><td>ID: ".$v["authorId"]."</td></tr>";
-                }
-                echo "</table>";
-            } else {
-                echo "The name you entered did not return any results";
             }
         }
 

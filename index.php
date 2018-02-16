@@ -19,7 +19,7 @@ session_start();
       <nav>
         <a href="index.php">Home</a>
         <a href="login.php">Log in</a>
-        <a href="signup.html">Sign up</a>
+        <a href="signup.php">Sign up</a>
         <a href="#" id="goBack">Go Back</a>
       </nav>
 
@@ -29,7 +29,6 @@ session_start();
                 <table>
                   <tr><td></td><td><label>Filter by author</label></td></tr>
                   <tr><td>Name</td><td><input type= "text" name="autFilter" id ="autFilter"></td></tr>
-                  <tr><td>ID</td><td><input type= "text" name="idFilter" id ="idFilter"></td></tr>
                   <tr><td></td><td><input type="button" name="aFilter" id ="aFilter" value="Filter"></td></tr>
                 </table>
               </div>
@@ -47,15 +46,6 @@ session_start();
                   <tr><td></td><td><label>Search for title</label></td></tr>
                   <tr><td>Title</td><td><input type= "text" name="titleSearch" id ="titleSearch"></td></tr>
                   <tr><td></td><td><input type="button" name="titleButton" id ="titleButton" value="Search"></td></tr>
-                </table>
-              </div>
-
-
-              <div>
-                <table>
-                  <tr><td></td><td><label>Search for author's id</label></td></tr>
-                  <tr><td>Name</td><td><input type= "text" name="idsearch1" id ="idsearch1"></td></tr>
-                  <tr><td></td><td><input type="button" name="idButton" id ="idButton" value="Search"></td></tr>
                 </table>
               </div>
 
