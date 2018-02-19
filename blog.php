@@ -20,6 +20,7 @@ session_start();
 
       <nav>
         <a href="index.php">Home</a>
+        <a href="blog.php">My Admin</a>
         <a href="login.php">Log in</a>
         <a href="signup.php">Sign up</a>
         <a href="#" id="goBack">Go Back</a>
@@ -64,19 +65,23 @@ session_start();
                           <table id="myTable">
                             <tr>
                               <td>
-                                <textarea name="abbreviation" placeholder="Abbreviation" id="abbreviation"></textarea>
+                                <input type ="text" name="abbreviation" placeholder="Abbreviation" id="abbreviation">
                               </td>
                               <td>
-                                <textarea name="expand_to" placeholder="Expand to" id="expand_to"></textarea>
+                                <input type ="text" name="expand_to" placeholder="Expand to" id="expand_to">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td>
+                                <input type="button" id="more_fields" value="Add More">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td>
+                                <input type="button" id="apply" value="Apply">
                               </td>
                             </tr>
                           </table>
-
-                          <div>
-                            <input type="button" id="more_fields" value="Add More"/>
-                            <input type="button" id ="apply" value="Apply">
-                          </div>
-
                       </form>
                     </div>
 
@@ -90,7 +95,7 @@ session_start();
                   $bloggername =$_SESSION['bloggername'];
                   $authorid = $_SESSION['bloggerid'];
 
-                  $query1 = "SELECT blogId, title, blogArticle, category, enable_comment, dateTime FROM blogs WHERE author = '$bloggername' AND authorId ='$authorid' ORDER BY dateTime DESC;";
+                  $query1 = "SELECT *, DATE_FORMAT(dateTime, '%M %d %Y %r') as date FROM blogs WHERE author = '$bloggername' AND authorId ='$authorid' ORDER BY dateTime DESC;";
                   $result1 = mysqli_query($connection, $query1);
                   $row1 = mysqli_fetch_all($result1, MYSQLI_ASSOC);
 
@@ -103,10 +108,12 @@ session_start();
                               <?php
 
                               foreach ($row1 as $k => $v) {
+                                $counter++
                                   ?>
 
                                   <!-- Article data -->
-                                  <p><?php echo "Date: ".$v["dateTime"]?></p>
+                                  <div class="blogs" id="blog<?php echo $v["blogId"]?>">
+                                  <p><?php echo "Date: ".$v["date"]?></p>
                                   <p><?php echo "Title: ".$v["title"]?></p>
                                   <p><?php echo "Category: ".$v["category"]?></p>
                                   <div><?php echo $v["blogArticle"]?></div>
@@ -128,20 +135,21 @@ session_start();
 
 
 
-
+                                      <!-- post a comment -->
+                                  <div>
                                     <form>
-                                      <p>Post a comment</p>
                                       <input type = "hidden" name ="blogid" value="<?php echo $v["blogId"]?>">
+                                      <input type = "hidden" name ="commentcount" value="commentscontainer<?php echo $counter ?>">
                                       <label><input type="checkbox" name="checkbox" value="value1">Post comment anonymously</label>
-                                      <textarea name="readercomment" id="readercomment"></textarea>
-                                      <input type="button" id="postComment" name="postComment" value="Post comment">
+                                      <textarea name="readercomment" id="readercomment" placeholder="Post a comment"></textarea>
+                                      <input type="button" class="postComment" name="postComment" value="Post comment">
                                     </form>
-
+                                  </div>
 
                                     <!-- Disable comments -->
                                      <div>
                                        <form method = "POST">
-                                       <input type = "hidden" name ="commentenable" value="<?php echo $v["blogId"]?>">
+                                       <input type = "hidden" name ="commentdisable" value="<?php echo $v["blogId"]?>">
                                        <label><input type="checkbox" name="commentcheckbox" value="value2">Disable commenting</label>
                                        <input type="submit" id="submitcbox" name="submitcbox" value="Apply">
                                        </form>
@@ -150,11 +158,12 @@ session_start();
 
 
                                   <!-- Comments section -->
+                                  <div id="commentsection">
                                   <table id = tbl>
-                                    <tr><td><div><p>Comments</p></div></td></tr>
-                                  <tr><td><div id=comments >
+                                    <tr><td><p>Comments</p></td></tr>
+                                    <tr><td><div id = "commentscontainer<?php echo $counter ?>" >
                                     <?php
-                                  $blogid2 = $v["blogId"];
+                                      $blogid2 = $v["blogId"];
 
                                       //query for comments
                                       $query2 = "SELECT id, comment, username FROM comments WHERE blogId = '$blogid2';";
@@ -165,13 +174,14 @@ session_start();
                                       // Display comment
                                       foreach ($row2 as $k2 => $v2) {
                                           ?>
-                                    <tr><td><div>
+                                        <tr><td>
                                         <form method = "POST">
-                                        <input type = "hidden" name ="commentid" value="<?php echo $v2["id"]?>">
-                                        <p><?php print_r($v2["username"].": ".$v2["comment"])?></p>
-                                        <input type="submit" id="deleteComment" name="deleteComment" value="Delete comment">
+                                        <input type = "hidden" name ="commentid" id = "commentid" value="<?php echo $v2["id"]?>">
+                                        <div class = "bcomments" id="bcomments<?php echo $v2["id"]?>">
+                                          <?php print_r($v2["username"].": ".$v2["comment"])?> <p class="deleteComment">&#10008;
+                                          <span class="tooltiptext">Delete comment</span></p>
+                                        </div>
                                       </form>
-                                    </div>
                                   </td></tr>
 
 
@@ -180,51 +190,44 @@ session_start();
                                       } ?>
                       </div></td></tr>
                       </table>
-
+                    </div>
+                      </div>
                           <?php
-                                  };
+                                  }else{
+
+                                    ?>
+
+                                    <!-- Enable comments -->
+                                    <div>
+                                      <p>Commenting has been disabled</p>
+                                      <form method = "POST">
+                                        <input type = "hidden" name ="commentenable" value="<?php echo $v["blogId"]?>">
+                                        <input type="submit" id="submitecbox" name="submitecbox" value="Enable comments">
+                                      </form>
+                                     </div>
+                                  </div>
+                                  <?php
+                                  }
                               }
                         ?>
-
-
                       </div>
 
                       <?php
-                          //submit comment
-                          if (isset($_POST['submitComment'])) {
-                              $readercomment = $_POST['readercomment'];
-                              $blogId1 = $_POST['blogid'];
-                              $bloggername = $_SESSION['bloggername'];
 
 
-                              //if anonymous box has been checked
-                              if (isset($_POST['checkbox'])) {
-                                  $query1 = "INSERT INTO comments (comment, blogId, username) VALUES ('$readercomment', '$blogId1', 'Anonymous');";
-                                  $result1 = mysqli_query($connection, $query1);
-                                  $row1 = mysqli_fetch_all($result1, MYSQLI_ASSOC);
-                              } else {
-                                  $query1 = "INSERT INTO comments (comment, blogId, username) VALUES ('$readercomment', '$blogId1', '$bloggername');";
-                                  $result1 = mysqli_query($connection, $query1);
-                                  $row1 = mysqli_fetch_all($result1, MYSQLI_ASSOC);
-                              }
-                          };
-
-
-
-                          //delete comment
-                          if (isset($_POST['deleteComment'])) {
-                              $commentid = $_POST['commentid'];
-
-                              $query4 = "DELETE FROM comments WHERE id = '$commentid';";
-                              $result4 = mysqli_query($connection, $query4);
-                              $row4 = mysqli_fetch_all($result4, MYSQLI_ASSOC);
-                          };
-
+                          //Disable commenting
                           if (isset($_POST['commentcheckbox']) && isset($_POST['submitcbox'])) {
-                              $blogid5 = $_POST['commentenable'];
+                              $blogid5 = $_POST['commentdisable'];
                               $query5 = "UPDATE blogs SET enable_comment = '1' WHERE blogId = '$blogid5';";
                               $result5 = mysqli_query($connection, $query5);
-                              $row5 = mysqli_fetch_all($result5, MYSQLI_ASSOC);
+                          }
+
+
+                          //Enable commenting
+                          if (isset($_POST['submitecbox'])) {
+                              $blogid6 = $_POST['commentenable'];
+                              $query6 = "UPDATE blogs SET enable_comment = '0' WHERE blogId = '$blogid6';";
+                              $result6 = mysqli_query($connection, $query6);
                           }
 
                           ?>

@@ -20,9 +20,9 @@ session_start();
 
       <nav>
         <a href="index.php">Home</a>
+        <a href="blog.php">My Admin</a>
         <a href="login.php">Log in</a>
         <a href="signup.html">Sign up</a>
-        <a href="blog.php">My admin</a>
         <a href="#" id="goBack">Go Back</a>
       </nav>
 

@@ -1,71 +1,36 @@
 $(function() {
 
   $('#aFilter').click(function() {
-
+    $('.blogs').show();
     //Get data to be sent to server
     var af = document.getElementById("autFilter");
-    var idf = document.getElementById("idFilter");
     var afv = af.value;
-    var idfv = idf.value;
 
+    $('.blogs').each(function() {
 
-    $.ajax({
-      type: 'POST',
-      url: 'search.php',
-      data: {
-        authorsearch: afv,
-        idFilter: idfv
-      },
-      success: function(response) {
-        $("#readerblogList").html(response);
-      },
-      error: function(msg) {
-        alert("Error: " + msg);
-      }
+      if ($(this).children().eq(0).text() !== "Author: " + afv) {
+        $(this).hide();
+      };
+
     });
+
   });
 
 
   $('#cFilter').click(function() {
-
+    $('.blogs').show();
     //Get data to be sent to server
     var cf = document.getElementById("catFilter");
     var cfv = cf.value;
 
-    $.ajax({
-      type: 'POST',
-      url: 'search.php',
-      data: {
-        catsearch: cfv
-      },
-      success: function(response) {
-        $("#readerblogList").html(response);
-      },
-      error: function(msg) {
-        alert("Error: " + msg);
-      }
+    $('.blogs').each(function() {
+
+      if ($(this).children().eq(3).text() !== "Category: " + cfv) {
+        $(this).hide();
+      };
+
     });
-  });
 
-  $('#idButton').click(function() {
-
-    //Get data to be sent to server
-    var ids = document.getElementById("idsearch1");
-    var idsv = ids.value;
-
-    $.ajax({
-      type: 'POST',
-      url: 'search.php',
-      data: {
-        idsearch1: idsv
-      },
-      success: function(response) {
-        $("#readerblogList").html(response);
-      },
-      error: function(msg) {
-        alert("Error: " + msg);
-      }
-    });
   });
 
   $('#titleButton').click(function() {
@@ -85,7 +50,15 @@ $(function() {
           titlesearch: arr
         },
         success: function(response) {
-          $("#readerblogList").html(response);
+          var res = $.parseJSON(response);
+          $('.blogs').show();
+
+          $(".blogs").each(function() {
+            var txt = $(this).attr("id");
+            if ($.inArray(txt, res) == -1) {
+              $(this).hide();
+            }
+          })
         },
         error: function(msg) {
           alert("Error: " + msg);
@@ -93,6 +66,7 @@ $(function() {
       });
     }
   });
+
 
   $("#monthButton").click(function(e) {
     var mData = $("#Month").val();
@@ -104,7 +78,15 @@ $(function() {
         month: mData
       },
       success: function(response) {
-        $("#readerblogList").html(response);
+        var res = $.parseJSON(response);
+        $('.blogs').show();
+
+        $(".blogs").each(function() {
+          var txt = $(this).attr("id");
+          if ($.inArray(txt, res) == -1) {
+            $(this).hide();
+          }
+        })
       },
       error: function(msg) {
         console.log("Error: " + msg);
@@ -113,27 +95,19 @@ $(function() {
   });
 
 
-  $("button").on("click", function() {
-    //  $('form').submit(function(event) {
-    // $('form').one("submit", function(event) {
-    // Stop the browser from submitting the form.
-    //event.preventDefault();
-    //console.log($("#postComment"));
-
+  $(".postComment").on("click", function() {
     var fr = $(this).closest("form");
-
-    // Serialize the form data.
+    var comment = fr.find("input").eq(1).val();
     var formData = fr.serialize();
-    // var formData = $(this).serialize();
-    //console.log(formData);
 
-    // Submit the form using AJAX.
+    //Submit the form using AJAX.
     $.ajax({
       type: 'POST',
       url: 'search.php',
       data: formData,
       success: function(response) {
-        $("#readerblogList").html(response);
+        $("#" + comment).append(response);
+
       },
       error: function(msg) {
         alert("Error: " + msg);

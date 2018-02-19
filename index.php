@@ -18,34 +18,33 @@ session_start();
 
       <nav>
         <a href="index.php">Home</a>
+        <?php if(isset($_SESSION['bloggername'])) {echo "<a href=\"blog.php\">My Admin</a>";}?>
         <a href="login.php">Log in</a>
         <a href="signup.php">Sign up</a>
         <a href="#" id="goBack">Go Back</a>
       </nav>
 
+      <div id=wrapper>
       <div id=categoryfilter>
 
               <div>
                 <table>
-                  <tr><td></td><td><label>Filter by author</label></td></tr>
-                  <tr><td>Name</td><td><input type= "text" name="autFilter" id ="autFilter"></td></tr>
-                  <tr><td></td><td><input type="button" name="aFilter" id ="aFilter" value="Filter"></td></tr>
+                  <tr><td><input type= "text" name="autFilter" id ="autFilter" placeholder="Filter by author"></td></tr>
+                  <tr><td><input type="button" name="aFilter" id ="aFilter" value="Filter"></td></tr>
                 </table>
               </div>
 
               <div>
                 <table>
-                  <tr><td></td><td><label>Filter by category</label></td></tr>
-                  <tr><td>Category</td><td><input type= "text" name="catFilter" id ="catFilter"></td></tr>
-                  <tr><td></td><td><input type="button" name="cFilter" id ="cFilter" value="Filter"></td></tr>
+                  <tr><td><input type= "text" name="catFilter" id ="catFilter" placeholder="Filter by category"></td></tr>
+                  <tr><td><input type="button" name="cFilter" id ="cFilter" value="Filter"></td></tr>
                 </table>
               </div>
 
               <div>
                 <table>
-                  <tr><td></td><td><label>Search for title</label></td></tr>
-                  <tr><td>Title</td><td><input type= "text" name="titleSearch" id ="titleSearch"></td></tr>
-                  <tr><td></td><td><input type="button" name="titleButton" id ="titleButton" value="Search"></td></tr>
+                  <tr><td><input type= "text" name="titleSearch" id ="titleSearch" placeholder="Search for keywords"></td></tr>
+                  <tr><td><input type="button" name="titleButton" id ="titleButton" value="Search"></td></tr>
                 </table>
               </div>
 
@@ -54,16 +53,16 @@ session_start();
                   <tr><td><label>Filter by month</label></td></tr>
                   <tr><td>
                     <select class="dropdown" name="Month" id ="Month">
-                      <option value="01">Januari</option>
-                      <option value="02">Februari</option>
-                      <option value="03">Maart</option>
+                      <option value="01">January</option>
+                      <option value="02">February</option>
+                      <option value="03">March</option>
                       <option value="04">April</option>
-                      <option value="05">Mei</option>
-                      <option value="06">Juni</option>
-                      <option value="07">Juli</option>
-                      <option value="08">Augustus</option>
+                      <option value="05">May</option>
+                      <option value="06">June</option>
+                      <option value="07">July</option>
+                      <option value="08">August</option>
                       <option value="09">September</option>
-                      <option value="10">Oktober</option>
+                      <option value="10">October</option>
                       <option value="11">November</option>
                       <option value="12">December</option>
                     </select></td></tr>
@@ -77,20 +76,23 @@ session_start();
             <div id="readerblogList">
                     <?php
 
-                    $query = "SELECT title, author, blogArticle, blogId, category, enable_comment, dateTime FROM blogs ORDER BY dateTime DESC;";
+                    $counter = 0;
+
+                    $query = "SELECT *, DATE_FORMAT(dateTime, '%M %d %Y %r') as date FROM blogs ORDER BY dateTime DESC;";
                     $result = mysqli_query($connection, $query);
                     $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
                     foreach ($row as $k => $v) {
+                      $counter++
                         ?>
 
                         <!-- Article data -->
-                        <div>
+                        <div class="blogs" id="blog<?php echo $v["blogId"]?>">
                           <p><?php echo "Author: ".$v["author"]?></p>
-                          <p><?php echo "Date: ".$v["dateTime"]?></p>
+                          <p><?php echo "Date: ".$v["date"]?></p>
                           <p><?php echo "Title: ".$v["title"]?></p>
                           <p><?php echo "Category: ".$v["category"]?></p>
-                          <div><?php echo $v["blogArticle"]?></div>
+                          <div id = "Article"><?php echo $v["blogArticle"]?></div>
 
 
                         <!-- check if comments enabled -->
@@ -98,23 +100,25 @@ session_start();
                             if ($v["enable_comment"] == 0) {
                                 ?>
 
+                        <!-- post a comment -->
                           <div>
-                              <p>Post a comment</p>
-                              <form id="frm">
+                            <form id="frm">
                               <input type = "hidden" name ="blogid" value="<?php echo $v["blogId"]?>">
+                              <input type = "hidden" name ="commentcount" value="commentscontainer<?php echo $counter ?>">
                               <label><input type="checkbox" name="checkbox" value="value1">Post comment anonymously</label>
-                              <textarea name="readercomment" id="readercomment"></textarea>
-                              <button type="button" id="postComment" name="postComment">Post comment</button>
+                              <textarea name="readercomment" id="readercomment" placeholder="Post a comment"></textarea>
+                              <input type="button" class="postComment" name="postComment" value="Post comment">
                             </form>
                           </div>
-                      </div>
+
 
 
 
                         <!-- Comments section -->
+                        <div id="commentsection">
                         <table id = tbl>
-                          <tr><td><div><p>Comments</p></div></td></tr>
-                          <tr><td><div id=comments>
+                          <tr><td><p>Comments</p></td></tr>
+                          <tr><td><div id = "commentscontainer<?php echo $counter ?>" >
                           <?php
                                 $blogid2 = $v["blogId"];
                                 $query2 = "SELECT comment, username FROM comments WHERE blogId = '$blogid2';";
@@ -123,22 +127,25 @@ session_start();
                                 foreach ($row2 as $k2 => $v2) {
                                     ?>
 
-                            <tr><td><div><?php print_r($v2["username"].": ".$v2["comment"])?></div></td></tr>
+                            <div id = "comments"><?php print_r($v2["username"].": ".$v2["comment"])?></div>
 
                             <?php
                                 } ?>
                           </div></td></tr>
                         </table>
+                      </div>
+                      </div>
                           <?php
-                            }
+                        }else{
+
+                          ?>
+                          <p>Commenting has been disabled</p>
+                        </div>
+                        <?php
+                        }
                     }
                             ?>
-
                           </div>
-                          <?php
 
-  ?>
-
-
-    </body>
-</html>
+                      </body>
+                      </html>

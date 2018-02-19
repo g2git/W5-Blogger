@@ -3,141 +3,9 @@ include_once('database.php');
 
 session_start();
 
-            //filter by author
-        if (isset($_POST['authorsearch'])) {
-            $name = $_POST['authorsearch'];
-
-            $query = "SELECT title, blogArticle, blogId, category, enable_comment, dateTime FROM blogs WHERE author = '$name' ORDER BY dateTime DESC;";
-            $result = mysqli_query($connection, $query);
-            $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
-            if ($result->num_rows > 0) {
-                echo
-
-                  "<h1>Author: ".$name."</h1>";
-
-                foreach ($row as $k => $v) {
-                    echo
-                      "<div>
-                        <p>Date: ".$v["dateTime"]."</p>
-                        <p>Title: ".$v["title"]."</p>
-                        <p>Category: ".$v["category"]."</p>
-                        <div>".$v["blogArticle"]."</div>";
-
-                    // check if comments enabled
-
-                    if ($v["enable_comment"] == 0) {
-                        echo
-
-                        "<div>
-                            <p>Post a comment</p>
-                            <form id=\"frm\">
-                            <input type = \"hidden\" name =\"blogid\" value=".$v["blogId"].">
-                            <label><input type=\"checkbox\" name=\"checkbox\" value=\"value1\">Post comment anonymously</label>
-                            <textarea name=\"readercomment\" id=\"readercomment\"></textarea>
-                            <button type=\"button\" id=\"postComment\" name=\"postComment\">Post comment</button>
-                            </form>
-                          </div>
-                        </div>".
-
-
-
-                      // Comments section
-                      "<table id = tbl>
-                        <tr><td><div><p>Comments</p></div></td></tr>
-                        <tr><td><div id=comments>";
-
-                        $blogid2 = $v["blogId"];
-                        $query2 = "SELECT comment, username FROM comments WHERE blogId = '$blogid2';";
-                        $result2 = mysqli_query($connection, $query2);
-                        $row2 = mysqli_fetch_all($result2, MYSQLI_ASSOC);
-                        foreach ($row2 as $k2 => $v2) {
-                            echo
-
-                          "<tr><td><div>".$v2["username"].": ".$v2["comment"]."</div></td></tr>";
-                        }
-                        echo
-
-                    "</div></td></tr>
-                    </table>";
-                    }
-                }
-
-                //end   if ($result->num_rows > 0)
-            } else {
-                echo "The name you entered did not return any results";
-            }
-        }
-
-        //search category
-        if (isset($_POST['catsearch'])) {
-            $category = $_POST['catsearch'];
-
-            $query = "SELECT * FROM blogs WHERE category ='$category'";
-            $result = mysqli_query($connection, $query);
-            $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
-            if ($result->num_rows > 0) {
-                foreach ($row as $k => $v) {
-                    echo
-                          "<div>
-                            <p>Date: ".$v["dateTime"]."</p>
-                            <p>Author: ".$v["author"]."</p>
-                            <p>Title: ".$v["title"]."</p>
-                            <p>Category: ".$v["category"]."</p>
-                            <div>".$v["blogArticle"]."</div>";
-
-                    // check if comments enabled
-
-                    if ($v["enable_comment"] == 0) {
-                        echo
-
-                            "<div>
-                              <p>Post a comment</p>
-                              <form id=\"frm\">
-                              <input type = \"hidden\" name =\"blogid\" value=".$v["blogId"].">
-                              <label><input type=\"checkbox\" name=\"checkbox\" value=\"value1\">Post comment anonymously</label>
-                              <textarea name=\"readercomment\" id=\"readercomment\"></textarea>
-                              <button type=\"button\" id=\"postComment\" name=\"postComment\">Post comment</button>
-                              </form>
-                            </div>
-                        </div>".
-
-
-
-                          // Comments section
-                          "<table id = tbl>
-                            <tr><td><div><p>Comments</p></div></td></tr>
-                            <tr><td><div id=comments>";
-
-                        $blogid2 = $v["blogId"];
-                        $query2 = "SELECT comment, username FROM comments WHERE blogId = '$blogid2';";
-                        $result2 = mysqli_query($connection, $query2);
-                        $row2 = mysqli_fetch_all($result2, MYSQLI_ASSOC);
-                        foreach ($row2 as $k2 => $v2) {
-                            echo
-
-                              "<tr><td><div>".$v2["username"].": ".$v2["comment"]."</div></td></tr>";
-                        }
-                        echo
-
-                        "</div></td></tr>
-                        </table>";
-                    }
-                }
-                echo
-
-                        "</div>";
-            } else {
-                echo "The category you entered did not return any result";
-            }
-        }
-
+        //Search by keywords
         if (isset($_POST['titlesearch'])) {
             $title = $_POST['titlesearch'];
-
-            //Counter for how many times there matches
-            $no_hits = sizeof($title);
 
             foreach ($title as $t) {
 
@@ -145,70 +13,19 @@ session_start();
             $result = mysqli_query($connection, $query);
             $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-            if ($result->num_rows > 0) {
+            $arr = array();
 
                 foreach ($row as $k => $v) {
-                    echo
-                          "<div>
-                            <p>Date: ".$v["dateTime"]."</p>
-                            <p>Author: ".$v["author"]."</p>
-                            <p>Title: ".$v["title"]."</p>
-                            <p>Category: ".$v["category"]."</p>
-                            <div>".$v["blogArticle"]."</div>";
 
-                    // check if comments enabled
+                    array_push($arr, "blog".$v["blogId"]);
 
-                    if ($v["enable_comment"] == 0) {
-                        echo
-
-                            "<div>
-                              <p>Post a comment</p>
-                              <form id=\"frm\">
-                              <input type = \"hidden\" name =\"blogid\" value=".$v["blogId"].">
-                              <label><input type=\"checkbox\" name=\"checkbox\" value=\"value1\">Post comment anonymously</label>
-                              <textarea name=\"readercomment\" id=\"readercomment\"></textarea>
-                              <button type=\"button\" id=\"postComment\" name=\"postComment\">Post comment</button>
-                              </form>
-                            </div>
-                        </div>".
-
-
-
-                          // Comments section
-                          "<table id = tbl>
-                            <tr><td><div><p>Comments</p></div></td></tr>
-                            <tr><td><div id=comments>";
-
-                        $blogid2 = $v["blogId"];
-                        $query2 = "SELECT comment, username FROM comments WHERE blogId = '$blogid2';";
-                        $result2 = mysqli_query($connection, $query2);
-                        $row2 = mysqli_fetch_all($result2, MYSQLI_ASSOC);
-                        foreach ($row2 as $k2 => $v2) {
-                            echo
-
-                              "<tr><td><div>".$v2["username"].": ".$v2["comment"]."</div></td></tr>";
-                        }
-                        echo
-
-                        "</div></td></tr>
-                        </table>";
-                    }
                 }
-                echo
 
-                        "</div>";
-            } else {
-                $no_hits--;
-            }
           }
-
-              //if no matches are found
-            if ($no_hits == 0)
-            {
-                echo "The title you searched did not return any results";
-            }
+            echo json_encode($arr);
         }
 
+        //Filter by month
         if (isset($_POST['month'])) {
           $month = $_POST['month'];
 
@@ -216,149 +33,52 @@ session_start();
           $result = mysqli_query($connection, $query);
           $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-          if ($result->num_rows > 0) {
-            foreach ($row as $k => $v) {
-                echo
 
-                "<div>
-                  <p>Date: ".$v["dateTime"]."</p>
-                  <p>Author: ".$v["author"]."</p>
-                  <p>Title: ".$v["title"]."</p>
-                  <p>Category: ".$v["category"]."</p>
-                  <div>".$v["blogArticle"]."</div>";
+          $arr = array();
 
-          // check if comments enabled
-
-          if ($v["enable_comment"] == 0) {
-              echo
-
-                  "<div>
-                    <p>Post a comment</p>
-                    <form id=\"frm\">
-                    <input type = \"hidden\" name =\"blogid\" value=".$v["blogId"].">
-                    <label><input type=\"checkbox\" name=\"checkbox\" value=\"value1\">Post comment anonymously</label>
-                    <textarea name=\"readercomment\" id=\"readercomment\"></textarea>
-                    <button type=\"button\" id=\"postComment\" name=\"postComment\">Post comment</button>
-                    </form>
-                  </div>
-              </div>".
-
-
-
-                // Comments section
-                "<table id = tbl>
-                  <tr><td><div><p>Comments</p></div></td></tr>
-                  <tr><td><div id=comments>";
-
-              $blogid2 = $v["blogId"];
-              $query2 = "SELECT comment, username FROM comments WHERE blogId = '$blogid2';";
-              $result2 = mysqli_query($connection, $query2);
-              $row2 = mysqli_fetch_all($result2, MYSQLI_ASSOC);
-              foreach ($row2 as $k2 => $v2) {
-                  echo
-
-                    "<tr><td><div>".$v2["username"].": ".$v2["comment"]."</div></td></tr>";
+              foreach ($row as $k => $v) {
+                  array_push($arr, "blog".$v["blogId"]);
               }
-              echo
-
-              "</div></td></tr>
-              </table>";
-                }
-            }
-            echo
-
-              "</div>";
-            }else{
-              echo "No articles found for this month";
-            }
+          echo json_encode($arr);
           }
+
 
         //submit comment
         if (isset($_POST['readercomment'])) {
           if (isset($_SESSION['username']) || isset($_SESSION['bloggername'])){
 
-            $readercomment = mysqli_escape_string($connection, $_POST['readercomment']);
+            $rc = htmlentities($_POST['readercomment']);
+            $readercomment = mysqli_escape_string($connection, $rc);
             $blogId1 = $_POST['blogid'];
             $username = $_SESSION['username'];
             $bloggername = $_SESSION['bloggername'];
-
+            $c_name = (isset($_SESSION['username'])) ? $username : $bloggername;
+            $c_response = (isset($_SESSION['username'])) ? "<div id = \"comments\">$c_name: $rc</div>" :  "<div class = \"bcomments\">$c_name: $rc <p class=\"deleteComment\">&#10008;
+            <span class=\"tooltiptext\">Delete comment</span></p></div>";
 
             //if anonymous box has been checked
             if (isset($_POST['checkbox'])) {
                 $query1 = "INSERT INTO comments (comment, blogId, username) VALUES ('$readercomment', '$blogId1', 'Anonymous');";
                 $result1 = mysqli_query($connection, $query1);
-                $row1 = mysqli_fetch_all($result1, MYSQLI_ASSOC);
             } else {
-              if(isset($_SESSION['username'])){
-                $query1 = "INSERT INTO comments (comment, blogId, username) VALUES ('$readercomment', '$blogId1', '$username');";
+                $query1 = "INSERT INTO comments (comment, blogId, username) VALUES ('$readercomment', '$blogId1', '$c_name');";
                 $result1 = mysqli_query($connection, $query1);
-                $row1 = mysqli_fetch_all($result1, MYSQLI_ASSOC);
-              }else{
-                $query1 = "INSERT INTO comments (comment, blogId, username) VALUES ('$readercomment', '$blogId1', '$bloggername');";
-                $result1 = mysqli_query($connection, $query1);
-                $row1 = mysqli_fetch_all($result1, MYSQLI_ASSOC);
               }
-            }
 
+             echo $c_response;
 
-            $query = "SELECT title, author, blogArticle, blogId, category, enable_comment, dateTime FROM blogs ORDER BY dateTime DESC;";
-            $result = mysqli_query($connection, $query);
-            $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
-            foreach ($row as $k => $v) {
-                echo
-
-              // Article data
-              "<div>
-                <p>Date: ".$v["dateTime"]."</p>
-                <p>Author: ".$v["author"]."</p>
-                <p>Title: ".$v["title"]."</p>
-                <p>Category: ".$v["category"]."</p>
-                <div>".$v["blogArticle"]."</div>";
-
-
-                // check if comments enabled
-
-                if ($v["enable_comment"] == 0) {
-                    echo
-
-            "<div>
-                <p>Post a comment</p>
-                <form id=\"frm\">
-                <input type = \"hidden\" name =\"blogid\" value=".$v["blogId"].">
-                <label><input type=\"checkbox\" name=\"checkbox\" value=\"value1\">Post comment anonymously</label>
-                <textarea name=\"readercomment\" id=\"readercomment\"></textarea>
-                <button type=\"button\" id=\"postComment\" name=\"postComment\">Post comment</button>
-                </form>
-              </div>
-            </div>".
-
-
-
-            // Comments section
-            "<table id = tbl>
-              <tr><td><div><p>Comments</p></div></td></tr>
-              <tr><td><div id=comments>";
-
-                    $blogid2 = $v["blogId"];
-                    $query2 = "SELECT comment, username FROM comments WHERE blogId = '$blogid2';";
-                    $result2 = mysqli_query($connection, $query2);
-                    $row2 = mysqli_fetch_all($result2, MYSQLI_ASSOC);
-                    foreach ($row2 as $k2 => $v2) {
-                        echo
-
-                "<tr><td><div>".$v2["username"].": ".$v2["comment"]."</div></td></tr>";
-                    }
-                    echo
-
-            "</div></td></tr>
-            </table>";
-                }
-            }
           }else{
-            echo "You must be logged in to post comments";
-          }
+            ?><script>alert("You must be logged in to post comments")</script><?php
         };
+        }
 
+
+        //delete comment
+        if (isset($_POST['commentid'])) {
+            $commentid = $_POST['commentid'];
+
+            $query4 = "DELETE FROM comments WHERE id = '$commentid';";
+            $result4 = mysqli_query($connection, $query4);
+        };
 
         ?>
