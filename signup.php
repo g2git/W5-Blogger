@@ -21,11 +21,19 @@ include_once('database.php');
       $email = htmlentities($_POST['bemail']);
 
       if($pass == $vpass){
+        session_unset();
         $hash_pass = password_hash($pass, PASSWORD_BCRYPT);
 
         $query1 = "INSERT INTO blogger (author, password, email) VALUES ('$name', '$hash_pass', '$email');";
         $result1 = mysqli_query($connection, $query1);
-        $row1 = mysqli_fetch_all($result1, MYSQLI_ASSOC);
+
+        $_SESSION['bloggername'] = $name;
+
+        $query = "SELECT * FROM blogger WHERE author = '$name'";
+        $result = mysqli_query($connection, $query);
+        $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+        $_SESSION['bloggerid'] = $row['authorId'];
 
         redirect_to("blog.php");
 
@@ -55,11 +63,13 @@ include_once('database.php');
       $email = htmlentities($_POST['uemail']);
 
       if($pass == $vpass){
+        session_unset();
         $hash_pass = password_hash($pass, PASSWORD_BCRYPT);
 
         $query1 = "INSERT INTO users (username, password, email) VALUES ('$username', '$hash_pass', '$email');";
         $result1 = mysqli_query($connection, $query1);
-        $row1 = mysqli_fetch_all($result1, MYSQLI_ASSOC);
+
+        $_SESSION['username'] = $username;
 
         redirect_to("index.php");
 
