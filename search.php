@@ -53,8 +53,7 @@ session_start();
             $username = $_SESSION['username'];
             $bloggername = $_SESSION['bloggername'];
             $c_name = (isset($_SESSION['username'])) ? $username : $bloggername;
-            $c_response = (isset($_SESSION['username'])) ? "<div id = \"comments\">$c_name: $rc</div>" :  "<div class = \"bcomments\">$c_name: $rc <p class=\"deleteComment\">&#10008;
-            <span class=\"tooltiptext\">Delete comment</span></p></div>";
+            $c_response = (isset($_SESSION['username'])) ? "<div id = \"comments\">$c_name: $rc</div>" :  "<div class = \"bcomments\">$c_name: $rc";
 
             //if anonymous box has been checked
             if (isset($_POST['checkbox'])) {
