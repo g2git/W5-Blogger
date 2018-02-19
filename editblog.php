@@ -45,9 +45,9 @@ session_start();
 
     }
 
-    //if(isset($_POST('edit'))){
-
+    if(isset($_POST['edit'])){
 ?>
+
                 <div id="wrapper">
 
                     <form  method="POST">
@@ -90,7 +90,7 @@ session_start();
 
                 <?php
 
-                //}
+                }
 
                   function redirect_to($newlocation)
                   {

@@ -120,10 +120,10 @@ session_start();
 
                                   <div>
                                       <form  method="POST" action="editblog.php">
-                                        <input type="hidden" name="edit_blogid" value = <?php echo $v["blogId"]?>>
-                                        <input type="hidden" name="edit_title" value = <?php echo $v["title"]?>>
-                                        <input type="hidden" name="edit_category" value = <?php echo $v["category"]?>>
-                                        <input type="hidden" name="edit_blogArticle" value = <?php echo $v["blogArticle"]?>>
+                                        <input type="hidden" name="edit_blogid" value = "<?php echo $v["blogId"]?>">
+                                        <input type="hidden" name="edit_title" value = "<?php echo $v["title"]?>">
+                                        <input type="hidden" name="edit_category" value = "<?php echo $v["category"]?>">
+                                        <input type="hidden" name="edit_blogArticle" value = "<?php echo $v["blogArticle"]?>">
                                         <input type="submit" name="edit" value="Edit blog">
                                       </form>
                                   </div>
