@@ -30,7 +30,7 @@ session_start();
 
 
 //submit Blog
-    if (isset($_POST['submitBlog'])) {
+    if (isset($_POST['submitBlog']) && isset($_SESSION['bloggername']) && isset($_SESSION['bloggerid'])) {
         $authorName = $_SESSION['bloggername'];
         $authorID = $_SESSION['bloggerid'];
         $title = $_POST["title"];
@@ -44,10 +44,12 @@ session_start();
         $result = mysqli_query($connection, $sql); ?><div><p><?php echo "Your blog has been posted"?></p></div>
     <?php
     }
+
+
+
+
+      if (isset($_SESSION['bloggername']) && isset($_SESSION['bloggerid'])) {
         ?>
-
-
-
                 <div id="wrapper">
 
                     <form  method="POST">
@@ -229,6 +231,8 @@ session_start();
                               $query6 = "UPDATE blogs SET enable_comment = '0' WHERE blogId = '$blogid6';";
                               $result6 = mysqli_query($connection, $query6);
                           }
+
+                        }
 
                           ?>
                         </div>
